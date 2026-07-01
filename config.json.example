@@ -1,0 +1,13 @@
+{
+  "source_channels": [
+    "@example_channel_1",
+    "@example_channel_2"
+  ],
+  "target_chat_id": "me",
+  "keywords": [
+    "meeting",
+    "deal",
+    "price",
+  ],
+  "admin_user_id": 123456789
+}
