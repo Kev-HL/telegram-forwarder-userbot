@@ -16,6 +16,10 @@ __pycache__/
 *.spec
 .build_cache/
 
+# Runtime Application Data
+config.json
+*.session
+
 # VSCode
 # Editor-specific settings
 .vscode/
