@@ -16,12 +16,6 @@ from config import save_config
 logger = logging.getLogger(__name__)
 
 
-class HandlerError(Exception):
-    """Custom exception for handler errors."""
-
-    pass
-
-
 async def handle_new_message(event: events.NewMessage.Event, config: dict) -> None:
     """
     Processes incoming feed messages from source chats or channels, scans for keywords,
