@@ -1,0 +1,6 @@
+# Python 3.12.3
+cryptg==0.6.0
+inputimeout==1.0.4
+pillow==12.2.0
+python-dotenv==1.2.2
+telethon==1.44.0
