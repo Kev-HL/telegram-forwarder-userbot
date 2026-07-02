@@ -1,13 +1,29 @@
 {
-  "source_channels": [
-    "@example_channel_1",
-    "@example_channel_2"
+  "feed_sources": [
+    {
+      "id": -1001999888777,
+      "name": "@some_Public_Channel_name"
+    },
+    {
+      "id": -9991222333,
+      "name": "@some_Super_Group_Chat_name"
+    },
+    {
+      "id": 444555666,
+      "name": "@some_User_name"
+    }
   ],
-  "target_chat_id": "me",
+  "forward_target": {
+    "id": 987654321,
+    "name": "@Target"
+  },
+  "admin_user": {
+    "id": 123456789,
+    "name": "@AdminUser"
+  },
   "keywords": [
     "meeting",
     "deal",
-    "price",
-  ],
-  "admin_user_id": 123456789
+    "price"
+  ]
 }
