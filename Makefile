@@ -1,22 +1,30 @@
 # Makefile for Telegram Forwarder Userbot
 
+# Set the Python interpreter to use (default: python3)
+PYTHON ?= python3
+
 # Install dependencies (production)
 setup:
-	python -m pip install --upgrade pip
-	pip install -r requirements.txt
-	pip install .
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -r requirements.txt
+	$(PYTHON) -m pip install .
 
 # Install dependencies (dev)
 setup_dev:
-	python -m pip install --upgrade pip
-	pip install -r requirements-dev.txt
-	pip install -e .
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -r requirements-dev.txt
+	$(PYTHON) -m pip install -e .
+
+# Create a virtual environment
+venv:
+	$(PYTHON) -m venv .venv
+	@echo "Virtual environment created. Activate it with 'source .venv/bin/activate'"
 
 # Format and lint code (black, flake8)
 format:
 	@echo "Formatting source code"
-	python -m black ./ src/
-	python -m flake8 ./ src/
+	$(PYTHON) -m black ./ src/
+	$(PYTHON) -m flake8 ./ src/
 
 # Clean temporary files
 clean:
@@ -33,4 +41,4 @@ help:
 	@echo "Available make targets:"
 	@grep -E '^[a-zA-Z_-]+:' Makefile | cut -d':' -f1 | grep -v '^_' | sort
 
-.PHONY: setup format clean help
+.PHONY: setup setup_dev venv format clean help

@@ -30,6 +30,9 @@ config.json
 # Catch other .env-like files
 *.env
 
+# Python virtual environments
+.venv/
+
 # OS
 .DS_Store       # macOS
 Thumbs.db       # Windows
