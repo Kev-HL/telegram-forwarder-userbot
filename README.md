@@ -136,18 +136,43 @@ Numerical IDs should only be used for source removal (if by name does not work).
 
 ---
 
-### 5) Oracle Cloud (planned deployment)
+### 5) Oracle Cloud Deployment [OPTIONAL]
 
-High-level target flow:
-1. Create Oracle Cloud Free Tier VM (Ubuntu)
+This is just an example, you can run the script locally or with other cloud services.  
+
+High-level flow:
+1. Create [Oracle Cloud](https://www.oracle.com/cloud/free/) VM
+   - Free Tier VM (Ubuntu latest LTS is easiest)
+   - Create/select a VCN + public subnet and ensure the instance has a public IPv4
+   - Configure SSH key pair
 2. SSH into VM
-3. Install `git`, `python3` (>=3.12, <3.13), `python3-venv`, `make`
-4. Clone repo and cd to it
-5. Run `make venv`, activate venv, and run `make setup`
+3. Install `git`, `python3` (>=3.12, <3.13), `python3-pip`, `python3-venv`, `make`
+4. Clone repo and `cd` into it
+5. Run `make venv`, **activate** the virtual environment, then run `make setup`
 6. Run `python3 setup.py` once
-7. Run `python3 main.py` (or run via systemd service for 24/7 mode)
+7. Run `python3 main.py` (or use systemd for 24/7 mode)
 
-Note: I have tested only with 3.12.3, which is the reason behind the strict version pin.
+> Note: Tested with Python 3.12.3, hence the strict version pin.
+
+---
+
+### 6) Run 24/7 via systemd  [OPTIONAL]
+
+A `tg-bot.service` file is provided and assumes common Ubuntu defaults.  
+Before using it, verify/update: `User`, `Group`, `WorkingDirectory`, `ExecStart`.
+
+Then on the VM:
+
+```bash
+sudo cp tg-bot.service /etc/systemd/system/tg-bot.service
+sudo systemctl daemon-reload
+sudo systemctl enable tg-bot
+sudo systemctl start tg-bot
+sudo systemctl status tg-bot
+journalctl -u tg-bot -f
+```
+
+systemd will start `main.py` on boot and restart it if the process exits unexpectedly.
 
 ---
 
