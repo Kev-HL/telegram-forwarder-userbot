@@ -5,7 +5,7 @@ import asyncio
 import logging
 import os
 import sys
-from datetime import datetime
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 # Third-party imports
@@ -20,13 +20,18 @@ from handlers import handle_new_message, handle_admin_command, HandlerError
 # Set up logging
 log_dir = Path("./logs")
 log_dir.mkdir(exist_ok=True)
-timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-log_file = log_dir / f"userbot_{timestamp}.log"
+log_file = log_dir / "userbot.log"
+size_handler = RotatingFileHandler(
+    filename=log_file,
+    maxBytes=10 * 1024 * 1024,  # 10 MB
+    backupCount=5,
+    encoding="utf-8",
+)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(log_file),
+        size_handler,
         logging.StreamHandler(sys.stdout),
     ],
 )
