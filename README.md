@@ -19,7 +19,7 @@ With customizable content filter and configurable from chat.
 
 ```text
 ┌──────────────────────────────────────────┐
-│ 1) setup.py (one-time)                   │
+│ 1) init_bot.py (one-time)                   │
 │ - Aks for API keys                       │
 │ - Create/update .env file                │
 │ - Ask for admin and forward target info  │
@@ -86,7 +86,7 @@ make setup
 ### 2) Configure credentials and initial entities (one-time)
 
 ```bash
-python3 setup.py
+python3 init_bot.py
 ```
 And follow CLI instructions.
 
@@ -149,7 +149,7 @@ High-level flow:
 3. Install `git`, `python3` (>=3.12, <3.13), `python3-pip`, `python3-venv`, `make`
 4. Clone repo and `cd` into it
 5. Run `make venv`, **activate** the virtual environment, then run `make setup`
-6. Run `python3 setup.py` once
+6. Run `python3 init_bot.py` once
 7. Run `python3 main.py` (or use systemd for 24/7 mode)
 
 > Note: Tested with Python 3.12.3, hence the strict version pin.
