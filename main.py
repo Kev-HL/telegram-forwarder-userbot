@@ -17,9 +17,10 @@ from telethon import TelegramClient, events
 from comms import check_comms, CommsError
 from config import load_config, ConfigError
 from handlers import handle_new_message, handle_admin_command
+from paths import DATA_DIR, SESSION_BASENAME
 
 # Set up logging
-log_dir = Path("./logs")
+log_dir = DATA_DIR / "logs"
 log_dir.mkdir(exist_ok=True)
 log_file = log_dir / "userbot.log"
 size_handler = RotatingFileHandler(
@@ -66,7 +67,7 @@ async def run():
 
         # Initialize Telethon Userbot Client
         # First call creates a persistent 'userbot.session' file in your root folder
-        client = TelegramClient("userbot", int(API_ID), API_HASH)
+        client = TelegramClient(str(SESSION_BASENAME), int(API_ID), API_HASH)
 
         # Register Listener for incoming messages
         @client.on(events.NewMessage(incoming=True))

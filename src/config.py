@@ -5,12 +5,11 @@ import json
 import logging
 from pathlib import Path
 
+# Local imports
+from paths import CONFIG_PATH
+
 # Set up logging
 logger = logging.getLogger(__name__)
-
-# Set path for config.json
-ROOT_PATH = Path(__file__).resolve().parent.parent
-CONFIG_PATH = ROOT_PATH / "config.json"
 
 
 class ConfigError(Exception):

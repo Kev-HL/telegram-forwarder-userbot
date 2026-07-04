@@ -14,9 +14,10 @@ from telethon import TelegramClient
 # Local imports
 from comms import get_entity_id, CommsError
 from config import load_config, save_config
+from paths import CONFIG_PATH, DATA_DIR, ENV_PATH, SESSION_BASENAME
 
 # Set up logging
-log_dir = Path("./logs")
+log_dir = DATA_DIR / "logs"
 log_dir.mkdir(exist_ok=True)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_file = log_dir / f"userbot_setup_{timestamp}.log"
@@ -31,10 +32,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logger.info(f"Logging to: {log_file}")
 logging.getLogger("telethon").setLevel(logging.WARNING)
-
-# Define paths for .env and config.json
-ENV_PATH = Path(".env")
-CONFIG_PATH = Path("config.json")
 
 
 def main():
@@ -109,12 +106,12 @@ def main():
 
     # Initialize TelegramClient for fetching IDs
     try:
-        client = TelegramClient("userbot", int(TG_API_ID), TG_API_HASH)
+        client = TelegramClient(str(SESSION_BASENAME), int(TG_API_ID), TG_API_HASH)
     except Exception as e:
         logger.error(f"Failed to initialize TelegramClient: {e}")
         sys.exit(1)
 
-    logger.info("Starting admin user and forward targetsetup")
+    logger.info("Starting admin user and forward target setup")
 
     # Update admin user if it exists, or prompt for new one
     admin_user = config.get("admin_user", {})

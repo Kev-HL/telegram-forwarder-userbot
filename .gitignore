@@ -17,8 +17,9 @@ __pycache__/
 .build_cache/
 
 # Runtime Application Data
-config.json
+/data/config.json
 *.session
+/data/logs/
 
 # VSCode
 # Editor-specific settings
