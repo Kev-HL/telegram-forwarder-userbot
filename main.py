@@ -115,7 +115,7 @@ async def supervisor():
         except ConfigError as e:
             # Likely not transient (invalid or corrupt config)
             logger.error(f"Fatal config error: {e}")
-            raise
+            sys.exit(1)
 
         except CommsError as e:
             # Admin or target unreachable, could be transient (network issues)
