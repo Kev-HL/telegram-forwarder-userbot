@@ -1,0 +1,44 @@
+# Dockerignore file for excluding unnecessary files from the Docker build context
+# Python cache folders
+__pycache__/
+# Compiled Python files (.pyc, .pyo, etc.)
+*.py[cod]
+# Python package build artifacts
+*.egg-info/
+# Other temp files
+.coverage
+
+# Build executables
+# Don't track build artifacts or binaries
+/build/
+/dist/
+*.spec
+.build_cache/
+
+# Runtime Application Data
+/data/config.json
+/data/logs/
+*.session
+
+# Environment
+# Environment variables files
+.env
+# Catch other .env-like files
+*.env
+
+# VSCode
+# Editor-specific settings
+.vscode/
+
+# OS metadata files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Logs, temp files
+*.log
+logs/
+core
