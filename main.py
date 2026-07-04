@@ -6,6 +6,7 @@ import logging
 import os
 import random
 import sys
+from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
 
 # Third-party imports
@@ -45,6 +46,13 @@ MAX_BACKOFF = 900  # 15 minutes
 BASE_BACKOFF = 30
 MAX_JITTER = 3
 
+# Heartbeat settings for monitoring
+HEARTBEAT_INTERVAL = 300  # 5 min
+STARTED_AT = datetime.now(timezone.utc)
+PROCESSED_MESSAGES = 0
+PROCESSED_COMMANDS = 0
+FORWARDED_MESSAGES = 0
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -58,7 +66,30 @@ if not API_ID or not API_HASH:
     sys.exit(1)
 
 
+async def heartbeat():
+    while True:
+        now = datetime.now(timezone.utc)
+        uptime = now - STARTED_AT
+        uptime_s = int(uptime.total_seconds())
+        h, rem = divmod(uptime_s, 3600)
+        m, s = divmod(rem, 60)
+
+        logger.info(
+            "heartbeat | uptime=%02d:%02d:%02d | processed_messages=%d"
+            " | processed_commands=%d | forwarded_messages=%d",
+            h,
+            m,
+            s,
+            PROCESSED_MESSAGES,
+            PROCESSED_COMMANDS,
+            FORWARDED_MESSAGES,
+        )
+        await asyncio.sleep(HEARTBEAT_INTERVAL)
+
+
 async def run():
+    heartbeat_task = None
+    client = None
     try:
         # Load config
         config = load_config()
@@ -71,17 +102,24 @@ async def run():
         # Register Listener for incoming messages
         @client.on(events.NewMessage(incoming=True))
         async def router(event):
+            global PROCESSED_MESSAGES
+            global PROCESSED_COMMANDS
+            global FORWARDED_MESSAGES
+
             admin_id = config["admin_user"]["id"]
             source_ids = {s["id"] for s in config["feed_sources"]}
+            PROCESSED_MESSAGES += 1
 
             # Admin command handler
             if event.sender_id == admin_id:
                 await handle_admin_command(event, client, config)
+                PROCESSED_COMMANDS += 1
                 return
 
             # Feed message handler
             if event.chat_id in source_ids:
                 await handle_new_message(event, config)
+                FORWARDED_MESSAGES += 1
                 return
 
         # Start client session loop, sync cache and wait for events
@@ -91,14 +129,25 @@ async def run():
         await client.get_dialogs()
         logger.info("Checking communication with admin and target...")
         await check_comms(client, config)
+        logger.info("Starting heartbeat task...")
+        heartbeat_task = asyncio.create_task(heartbeat())
         logger.info("Telegram Forwarder Userbot is running!")
         await client.run_until_disconnected()
     finally:
+        # Cancel heartbeat
+        if heartbeat_task is not None:
+            heartbeat_task.cancel()
+            try:
+                await heartbeat_task
+            except asyncio.CancelledError:
+                pass
+
         # Ensure client disconnects cleanly
-        try:
-            await client.disconnect()
-        except Exception as e:
-            logger.warning(f"Error during client disconnect: {e}")
+        if client is not None:
+            try:
+                await client.disconnect()
+            except Exception as e:
+                logger.warning(f"Error during client disconnect: {e}")
 
 
 async def supervisor():
