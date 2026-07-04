@@ -110,6 +110,10 @@ async def handle_admin_command(
                 await event.respond(f"Active Keywords:\n{current_filters}")
                 return
 
+            if action not in ["add", "rm"]:
+                await event.respond("Usage: `/filter [list|add|rm] <keyword>`")
+                return
+
             if len(parts) < 3:
                 await event.respond("Please provide a keyword value.")
                 return
@@ -150,6 +154,10 @@ async def handle_admin_command(
                 await event.respond(f"Monitored Sources:\n{formatted_list}")
                 return
 
+            if action not in ["add", "rm"]:
+                await event.respond("Usage: `/source [list|add|rm] <identifier>`")
+                return
+
             if len(parts) < 3:
                 await event.respond("Please provide a source link, username or ID.")
                 return
@@ -159,31 +167,23 @@ async def handle_admin_command(
             # Check in case user has provided a numeric ID
             # And if rm, bypass the network to remove directly from config.json
             if bool(re.match(r"^-?[0-9]+$", target)):
-                target = int(target)
-                if action == "rm":
-                    try:
-                        target_entity = await client.get_entity(target)
-                        await client(LeaveChannelRequest(target_entity))
-                    except Exception as e:
-                        logger.debug(f"Failed to fetch source {target}: {e}")
-                    current_source_ids = [c["id"] for c in config["feed_sources"]]
-                    if target in current_source_ids:
-                        config["feed_sources"] = [
-                            c for c in config["feed_sources"] if c["id"] != target
-                        ]
-                        save_config(config)
-                        await event.respond(
-                            f"Stopped monitoring source with ID: `{target}`"
-                        )
-                    else:
-                        await event.respond(
-                            f"Source with ID `{target}` not found in tracking config."
-                        )
+                if action == "add":
+                    await event.respond(
+                        "Numeric IDs are not supported for adding sources. Please "
+                        "provide a @name or t.me link."
+                    )
                     return
+                else:
+                    target = int(target)
 
-            target_entity = await client.get_entity(target)
-            target_id = get_peer_id(target_entity)
-            target_name = get_display_name(target_entity)
+            if not isinstance(target, int):
+                target_entity = await client.get_entity(target)
+                target_id = get_peer_id(target_entity)
+                target_name = get_display_name(target_entity)
+            else:
+                target_entity = None
+                target_id = target
+                target_name = f"ID {target_id}"
 
             current_source_ids = [c["id"] for c in config["feed_sources"]]
 
@@ -206,6 +206,8 @@ async def handle_admin_command(
             elif action == "rm":
                 if target_id in current_source_ids:
                     try:
+                        if not target_entity:
+                            target_entity = await client.get_entity(target_id)
                         await client(LeaveChannelRequest(target_entity))
                     except Exception as e:
                         logger.debug(f"Failed to leave source {target_name}: {e}")
@@ -250,7 +252,7 @@ async def handle_admin_command(
                 save_config(config)
                 await event.respond(f"Forward target set to: `{target_name}`")
             return
-        if text == "Beep":
+        if text.lower() == "beep":
             await event.respond("Boop")
             return
 
