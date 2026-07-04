@@ -178,6 +178,78 @@ systemd will start `main.py` on boot and restart it if the process exits unexpec
 
 ---
 
+### 7) Deploy to Fly.io  [OPTIONAL] (Alternative to Oracle VPS)
+
+> **Note:** Pay as you go service.
+
+Before starting, complete steps 1–2 of this “How to Run” section to generate:  
+- `config.json`
+- `userbot.session`  
+
+**Important:** Back them up securely. Treat `userbot.session` like a password.  
+
+
+High level flow (run from repo root, where fly.toml and data/ are):  
+
+1. Create [Fly.io](https://fly.io/) account
+   - Verify email + billing card (deployment fails otherwise).
+2. Install [flyctl](https://fly.io/docs/flyctl/install/)
+3. Run `fly launch --no-deploy`
+   - Log in when prompted
+   - Recommended settings:
+     - 1 vCPU
+     - 256 mb RAM
+     - Postgres, Tigris, Redis, Sentry all disabled
+4. Set secrets:
+```bash
+fly secrets set -a telegram-forwarder-userbot TG_API_ID=... TG_API_HASH=... 
+```
+5. Deploy to create and start the machine
+```bash
+fly deploy 
+```
+6. Copy `config.json` and `userbot.session` to the `data` volume
+```bash
+fly ssh sftp put data/config.json /data/config.json -a telegram-forwarder-userbot
+fly ssh sftp put data/userbot.session /data/userbot.session -a telegram-forwarder-userbot
+```
+7. Connect via SSH to the machine and fix permissions on `data`
+```bash
+fly ssh console -a telegram-forwarder-userbot
+chown -R botuser:botuser /data
+chmod 700 /data
+chmod 600 /data/*.session /data/config.json
+exit
+```
+8. Restart the machine
+```bash
+fly machine list -a telegram-forwarder-userbot # Look ID
+fly machine restart <id> -a telegram-forwarder-userbot
+```
+
+#### Common Fly.io Issues (Quick Fixes)
+
+- Machine appears as `suspended` / `stopped`, restart the machine:  
+  - `fly machine restart <id> -a telegram-forwarder-userbot`
+
+- Logs end in Configuring Firecracker
+  - This usually means the VM booted but your app process did not fully start (or exited early).
+
+- `config.json` not found / bot stuck in startup loop
+  - Ensure files are on the mounted volume (`/data`), not current working directory:
+
+- `sqlite3.OperationalError: attempt to write a readonly database`
+  - File ownership/permissions are wrong (common after SFTP upload).
+
+- SFTP upload fails
+  - `fly machine start <id> -a telegram-forwarder-userbot`
+
+- Secrets missing (app exits on startup). Re-set secrets:
+
+  - `fly secrets set -a telegram-forwarder-userbot TG_API_ID=... TG_API_HASH=...`
+
+---
+
 ## References
 
 [Telethon: Repository](https://codeberg.org/Lonami/Telethon)  
