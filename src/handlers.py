@@ -86,8 +86,8 @@ async def handle_admin_command(
                 "- `/target set <identifier>` — Change forward target\n\n"
                 "With identifier: @name or link (t.me/name).\n"
                 "Numerical IDs should only be used for source removal.\n"
-                "Only works with UserNames, Public Channels or Super Groups.\n"
-                "Private channels or private/legacy groups are not supported.\n"
+                "Only works with @usernames, Public Channels or Super Groups.\n"
+                "Private channels and private/legacy groups are not supported.\n"
                 "Use 'me' as identifier on target to forward to your Saved Messages."
             )
             await event.respond(help_menu)
@@ -104,7 +104,7 @@ async def handle_admin_command(
 
             if action == "list":
                 current_filters = (
-                    ", ".join([f"`{k}`" for k in config["keywords"]]) or "None"
+                    ",\n".join([f"`{k}`" for k in config["keywords"]]) or "None"
                 )
                 await event.respond(f"Active Keywords:\n{current_filters}")
                 return
@@ -145,7 +145,7 @@ async def handle_admin_command(
                 sources_list = [
                     f"`{c['name']}` (ID: `{c['id']}`)" for c in config["feed_sources"]
                 ]
-                formatted_list = ", ".join(sources_list) or "None"
+                formatted_list = ",\n".join(sources_list) or "None"
                 await event.respond(f"Monitored Sources:\n{formatted_list}")
                 return
 
