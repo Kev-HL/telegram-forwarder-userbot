@@ -4,7 +4,7 @@
 from pathlib import Path
 
 # Root path of the repository
-ROOT_PATH = Path(__file__).resolve().parent.parent
+ROOT_PATH = Path(__file__).resolve().parent.parent.parent
 
 # Env file path
 ENV_PATH = ROOT_PATH / ".env"

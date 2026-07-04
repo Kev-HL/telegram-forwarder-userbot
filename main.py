@@ -7,17 +7,16 @@ import os
 import random
 import sys
 from logging.handlers import RotatingFileHandler
-from pathlib import Path
 
 # Third-party imports
 from dotenv import load_dotenv
 from telethon import TelegramClient, events
 
 # Local imports
-from comms import check_comms, CommsError
-from config import load_config, ConfigError
-from handlers import handle_new_message, handle_admin_command
-from paths import DATA_DIR, SESSION_BASENAME
+from tfu.comms import check_comms, CommsError
+from tfu.config import load_config, ConfigError
+from tfu.handlers import handle_new_message, handle_admin_command
+from tfu.paths import DATA_DIR, SESSION_BASENAME
 
 # Set up logging
 log_dir = DATA_DIR / "logs"

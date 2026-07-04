@@ -3,10 +3,9 @@
 # Standard imports
 import json
 import logging
-from pathlib import Path
 
 # Local imports
-from paths import CONFIG_PATH
+from tfu.paths import CONFIG_PATH
 
 # Set up logging
 logger = logging.getLogger(__name__)

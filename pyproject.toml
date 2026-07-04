@@ -4,4 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "telegram-forwarder-userbot"
-version = "0.1.0"
+version = "0.1.1"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -10,7 +10,7 @@ from telethon.utils import get_peer_id, get_display_name
 from telethon.tl.functions.channels import JoinChannelRequest, LeaveChannelRequest
 
 # Local imports
-from config import save_config
+from tfu.config import save_config
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -253,7 +253,7 @@ async def handle_admin_command(
         if text == "Beep":
             await event.respond("Boop")
             return
-        
+
         if text:
             await event.respond(
                 "Unrecognized command. Use `/help` to see available commands."

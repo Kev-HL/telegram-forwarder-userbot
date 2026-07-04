@@ -4,7 +4,6 @@
 import logging
 import sys
 from datetime import datetime
-from pathlib import Path
 
 # Third-party imports
 from dotenv import dotenv_values, set_key
@@ -12,9 +11,9 @@ from inputimeout import inputimeout, TimeoutOccurred
 from telethon import TelegramClient
 
 # Local imports
-from comms import get_entity_id, CommsError
-from config import load_config, save_config
-from paths import CONFIG_PATH, DATA_DIR, ENV_PATH, SESSION_BASENAME
+from tfu.comms import get_entity_id, CommsError
+from tfu.config import load_config, save_config
+from tfu.paths import CONFIG_PATH, DATA_DIR, ENV_PATH, SESSION_BASENAME
 
 # Set up logging
 log_dir = DATA_DIR / "logs"
