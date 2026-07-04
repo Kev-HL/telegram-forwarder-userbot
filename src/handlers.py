@@ -38,7 +38,7 @@ async def handle_new_message(event: events.NewMessage.Event, config: dict) -> No
     pattern = re.compile("|".join(map(re.escape, keywords)), re.IGNORECASE)
 
     # Search logic execution
-    if pattern.search(message_text):
+    if pattern.search(message_text.lower()):
         target_id = config.get("forward_target", {}).get("id", "me")
         target_name = config.get("forward_target", {}).get("name", "Saved Messages")
         logger.info(
@@ -113,7 +113,7 @@ async def handle_admin_command(
                 await event.respond("Please provide a keyword value.")
                 return
 
-            keyword = parts[2].strip()
+            keyword = parts[2].strip().lower()
 
             if action == "add":
                 if keyword not in config["keywords"]:
