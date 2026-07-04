@@ -1,6 +1,7 @@
 """Shared runtime paths module for Telegram Forwarder Userbot"""
 
 # Standard imports
+import os
 from pathlib import Path
 
 # Root path of the repository
@@ -9,8 +10,8 @@ ROOT_PATH = Path(__file__).resolve().parent.parent.parent
 # Env file path
 ENV_PATH = ROOT_PATH / ".env"
 
-# Runtime data directory (logs, session, config)
-DATA_DIR = ROOT_PATH / "data"
+# Runtime data directory (logs, session, config) (override for Dockerfile build)
+DATA_DIR = Path(os.getenv("DATA_DIR", ROOT_PATH / "data"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 # Telethon session base path -> creates "userbot.session"
