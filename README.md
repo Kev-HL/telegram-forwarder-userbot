@@ -19,9 +19,10 @@ With customizable content filter and configurable from chat.
 
 ```text
 ┌──────────────────────────────────────────┐
-│ 1) init_bot.py (one-time)                   │
+│ 1) init_bot.py (one-time)                │
 │ - Aks for API keys                       │
 │ - Create/update .env file                │
+│ - Login TG account                       │
 │ - Ask for admin and forward target info  │
 │ - Resolve admin and forward target IDs   │
 │ - Create/update config.json file         │
@@ -125,6 +126,7 @@ To be used in any chat where bot and admin are present, including direct convers
 - `/source rm <identifier|ID>` — Remove source
 - `/target show` — Show current forward target
 - `/target set <identifier>` — Change forward target
+- `/beep` — Answer boop
 
 With identifier being: @name or link (t.me/name).
 

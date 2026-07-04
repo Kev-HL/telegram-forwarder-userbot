@@ -249,6 +249,14 @@ async def handle_admin_command(
                 save_config(config)
                 await event.respond(f"Forward target set to: `{target_name}`")
             return
+        if text == "Beep":
+            await event.respond("Boop")
+            return
+        
+        if text:
+            await event.respond(
+                "Unrecognized command. Use `/help` to see available commands."
+            )
 
     except Exception as e:
         logger.error(f"Error processing admin command: {e}")
