@@ -1,14 +1,16 @@
 # Telegram Forwarder Userbot
 
-![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
-![Telegram](https://img.shields.io/badge/Telegram-0088CC?logo=telegram&logoColor=white)
-![Telethon 1.44](https://img.shields.io/badge/telethon-1.44-purple.svg)
-![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
-
+![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Telethon 1.44](https://img.shields.io/badge/telethon-1.44-purple?style=for-the-badge)
+![Code style: black](https://img.shields.io/badge/code%20style-black-000000?style=for-the-badge)
+![Telegram](https://img.shields.io/badge/Telegram-0088CC?style=for-the-badge&logo=telegram&logoColor=white)
+![Oracle](https://img.shields.io/badge/Oracle%20VM-C74634?style=for-the-badge)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Fly.io](https://img.shields.io/badge/Fly.io-24175B?style=for-the-badge&logo=flydotio&logoColor=white)
 
 Asynchronous Telegram application built with Telethon to automatically filter and route messages from multiple sources to a single destination. 
 
-With customizable content filter and configurable from chat.
+Includes customizable content filters and in-chat configuration.
 
 > **WARNING:** Be careful not to break [Telegram's API ToS](https://core.telegram.org/api/terms) or Telegram can ban your account. It is recommended to use a dev account to protect your personal account.
 
@@ -23,7 +25,7 @@ With customizable content filter and configurable from chat.
 │ - Aks for API keys                       │
 │ - Create/update .env file                │
 │ - Login TG account                       │
-│ - Ask for admin and forward target info  │
+│ - Asks for admin and forward target info │
 │ - Resolve admin and forward target IDs   │
 │ - Create/update config.json file         │
 └──────────────┬───────────────────────────┘
@@ -64,7 +66,8 @@ With customizable content filter and configurable from chat.
 
 ## Tech stack
 
-**Telethon** - Asyncio Python library to collect data using Telegram's API
+**Telethon** - Asyncio Python library to collect data using Telegram's API  
+**Docker** - Containerization platform to simplify application deployment 
 
 ---
 
@@ -138,9 +141,17 @@ Numerical IDs should only be used for source removal (if by name does not work).
 
 ---
 
-### 5) Oracle Cloud Deployment [OPTIONAL]
+## How to Deploy
 
-This is just an example, you can run the script locally or with other cloud services.  
+The bot can be run locally with the How-to-Run instructions, alternatively you can use a cloud service.
+
+Two deployment options are documented:  
+- Traditional **Linux VPS** on an **Oracle Cloud Infrastructure** (OCI) Compute instance  
+- Containerized deployment with **Docker** on **Fly.io**  
+
+The same general process should apply to other hosting providers with minor adjustments.  
+
+### 1) Oracle Cloud Deployment  
 
 High-level flow:
 1. Create [Oracle Cloud](https://www.oracle.com/cloud/free/) VM
@@ -156,9 +167,7 @@ High-level flow:
 
 > Note: Tested with Python 3.12.3, hence the strict version pin.
 
----
-
-### 6) Run 24/7 via systemd  [OPTIONAL]
+#### Run 24/7 via systemd
 
 A `tg-bot.service` file is provided and assumes common Ubuntu defaults.  
 Before using it, verify/update: `User`, `Group`, `WorkingDirectory`, `ExecStart`.
@@ -178,7 +187,7 @@ systemd will start `main.py` on boot and restart it if the process exits unexpec
 
 ---
 
-### 7) Deploy to Fly.io  [OPTIONAL] (Alternative to Oracle VPS)
+### 2) Deploy to Fly.io
 
 > **Note:** Pay as you go service.
 
@@ -189,7 +198,7 @@ Before starting, complete steps 1–2 of this “How to Run” section to genera
 **Important:** Back them up securely. Treat `userbot.session` like a password.  
 
 
-High level flow (run from repo root, where fly.toml and data/ are):  
+High-level flow (run from repo root, where fly.toml and data/ are):  
 
 1. Create [Fly.io](https://fly.io/) account
    - Verify email + billing card (deployment fails otherwise).
@@ -198,7 +207,7 @@ High level flow (run from repo root, where fly.toml and data/ are):
    - Log in when prompted
    - Recommended settings:
      - 1 vCPU
-     - 256 mb RAM
+     - 256 MB RAM
      - Postgres, Tigris, Redis, Sentry all disabled
 4. Set secrets:
 ```bash
@@ -227,6 +236,8 @@ fly machine list -a telegram-forwarder-userbot # Look ID
 fly machine restart <id> -a telegram-forwarder-userbot
 ```
 
+`fly.toml` includes a machine restart policy (on-failure, limited retries) so it can auto-recover from unexpected process crashes.
+
 #### Common Fly.io Issues (Quick Fixes)
 
 - Machine appears as `suspended` / `stopped`, restart the machine:  
@@ -254,6 +265,8 @@ fly machine restart <id> -a telegram-forwarder-userbot
 
 [Telethon: Repository](https://codeberg.org/Lonami/Telethon)  
 [Telegram's API ToS](https://core.telegram.org/api/terms)  
+[Oracle OCI Documentation](https://docs.oracle.com/en-us/iaas/Content/home.htm)  
+[Fly.io Documentation](https://fly.io/docs/)  
 
 ---
 
