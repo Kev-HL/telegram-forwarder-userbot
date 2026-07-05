@@ -1,12 +1,12 @@
 # Telegram Forwarder Userbot
 
-![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Telethon 1.44](https://img.shields.io/badge/telethon-1.44-purple?style=for-the-badge)
-![Code style: black](https://img.shields.io/badge/code%20style-black-000000?style=for-the-badge)
-![Telegram](https://img.shields.io/badge/Telegram-0088CC?style=for-the-badge&logo=telegram&logoColor=white)
-![Oracle](https://img.shields.io/badge/Oracle%20VM-C74634?style=for-the-badge)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Fly.io](https://img.shields.io/badge/Fly.io-24175B?style=for-the-badge&logo=flydotio&logoColor=white)
+![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![Telethon 1.44](https://img.shields.io/badge/telethon-1.44-purple)
+![Code style: black](https://img.shields.io/badge/code%20style-black-000000)
+![Telegram](https://img.shields.io/badge/Telegram-0088CC?logo=telegram&logoColor=white)
+![Oracle](https://img.shields.io/badge/Oracle%20VM-C74634)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![Fly.io](https://img.shields.io/badge/Fly.io-24175B?logo=flydotio&logoColor=white)
 
 Asynchronous Telegram application built with Telethon to automatically filter and route messages from multiple sources to a single destination. 
 
