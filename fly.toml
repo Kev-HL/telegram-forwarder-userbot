@@ -9,6 +9,10 @@ primary_region = 'ams'
   source = 'data'
   destination = '/data'
 
+[[restart]]
+  policy = "on-failure"
+  retries = 5
+
 [[vm]]
   memory = '256mb'
   cpus = 1
